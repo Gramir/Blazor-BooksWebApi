@@ -1,0 +1,29 @@
+﻿@inject IBookService Bookservice
+
+
+<EditForm Model="book" OnSubmit="Submit">
+
+    <div class="form-group"><label>Titulo</label><InputText @bind-Value="book.Title" class="form-control"></InputText></div> 
+    <div class="form-group"><label>Descripcion</label><InputText @bind-Value="book.Description" class="form-control"></InputText></div>
+    <div class="form-group"><label>Resumen</label><InputText @bind-Value="book.Excerpt" class="form-control"></InputText></div>
+    <div class="form-group"><label>Fecha Publicacion</label><InputDate @bind-Value="book.PublishDate" class="form-control"></InputDate></div>
+    <div class="form-group"><label>Numero de paginas</label><InputNumber @bind-Value="book.PageCount" class="form-control"></InputNumber></div>
+        
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+
+@code {
+     [Parameter]
+    public Book ?book { get; set; }
+
+   
+    //public int id { get; set; }
+
+
+    async void Submit ()
+    {
+        await Bookservice.UpdateBook(book);
+    }
+
+}

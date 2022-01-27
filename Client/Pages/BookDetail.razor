@@ -1,0 +1,58 @@
+﻿@page "/books/{id:int}"
+@inject IBookService BookService
+
+@if (book == null)
+{
+    <h2>Loading.....</h2>
+}
+else
+{
+<table class="table">
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th>Resumen</th>
+                <th>Fecha de Publicacion</th>
+                <th>Numero de paginas</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Description</td>
+                    <td>@book.Excerpt</td>
+                    <td>@book.PublishDate</td>
+                    <td>@book.PageCount</td>
+                    <td><button class="btn btn-primary" @onclick="(()=> Editar(book.Id))">Editar</button></td>
+                </tr>
+
+        </tbody>
+    </table>
+
+    @if (edit)
+    {
+        <CreateBook book= "book"></CreateBook>
+    }
+}
+
+@code {
+
+
+    [Parameter]
+    public int id { get; set; }
+
+    Book book = new Book();
+    bool edit = false;
+    protected override async Task OnInitializedAsync()
+    {
+        book = await BookService.GetBook(id);
+    }
+
+    void Editar(int id)
+    {
+        edit = !edit;       
+    }
+
+    
+}

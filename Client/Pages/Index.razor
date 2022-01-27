@@ -1,0 +1,64 @@
+﻿@page "/"
+@inject IBookService BookService 
+@inject NavigationManager Nav
+<h3>Books</h3>
+
+
+@if(books.Count==0){
+<h2>Loading....</h2>
+}
+
+<button class="btn btn-primary" @onclick=Create>Crear un nuevo libro</button>
+@if (crear){
+    <CreateBook book="book"></CreateBook>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var book in books)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Description</td>
+                    <td><button class="btn btn-primary" @onclick="(()=> Details(book.Id))">Details</button></td>
+                    <td><button class="btn btn-primary" @onclick="(()=> Delete(book.Id))">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code{
+
+    List<Book> books = new List<Book>();
+    Book book = new Book();
+    bool crear = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        books = await BookService.GetBooks();
+
+    }
+ 
+
+    void Details(int id)
+    {
+        Nav.NavigateTo($"/books/{id}");
+    }
+
+    void Create()
+    {
+        crear = !crear;
+    }
+    void Delete (int id)
+    {
+        BookService.DeleteBook(id);
+    }
+}
