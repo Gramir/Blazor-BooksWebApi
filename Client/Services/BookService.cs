@@ -12,7 +12,7 @@ namespace Booksv2.Client.Services
             _httpClientLocal = httpClient;
         }
 
-        public async Task<Book> CreateBook(Book book)
+        public async Task<Book?> CreateBook(Book book)
         {
             var books = await _httpClientLocal.PostAsJsonAsync($"api/v1/Books/", book);
             if (books.IsSuccessStatusCode)
@@ -32,13 +32,13 @@ namespace Booksv2.Client.Services
             return await _httpClientLocal.DeleteAsync($"api/Book/{id}");
         }
 
-        public async Task<Book> GetBook(int id)
+        public async Task<Book?> GetBook(int id)
         {
-            return await _httpClientLocal.GetFromJsonAsync<Book>($"api/Book/{id}");
+            return await _httpClientLocal.GetFromJsonAsync<Book?>($"api/Book/{id}");
             
         }
 
-        public async Task<List<Book>> GetBooks()
+        public async Task<List<Book>?> GetBooks()
         {
             return await _httpClientLocal.GetFromJsonAsync<List<Book>>("api/Book");
 
